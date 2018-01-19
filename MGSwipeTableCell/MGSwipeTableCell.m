@@ -425,7 +425,6 @@ typedef struct MGSwipeAnimationData {
 
     MGSwipeTableInputOverlay * _tableInputOverlay;
     bool _overlayEnabled;
-    __weak UITableView * _cachedParentTable;
     UITableViewCellSelectionStyle _previusSelectionStyle;
     NSMutableSet * _previusHiddenViews;
     BOOL _triggerStateChanges;
@@ -771,18 +770,14 @@ typedef struct MGSwipeAnimationData {
 
 -(UITableView *) parentTable
 {
-    if (_cachedParentTable) {
-        return _cachedParentTable;
-    }
-    
     UIView * view = self.superview;
     while(view != nil) {
         if([view isKindOfClass:[UITableView class]]) {
-            _cachedParentTable = (UITableView*) view;
+            return (UITableView*) view;
         }
         view = view.superview;
     }
-    return _cachedParentTable;
+    return nil;
 }
 
 -(void) updateState: (MGSwipeState) newState;
